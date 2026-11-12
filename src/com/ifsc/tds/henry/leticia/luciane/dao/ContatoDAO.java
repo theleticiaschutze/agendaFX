@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ifsc.tds.henry.leticia.luciane.entity.Contato;
-import com.peregrinoti.entity.Amigo;
 
 public class ContatoDAO implements DAO<Contato> {
 
@@ -70,7 +69,7 @@ public class ContatoDAO implements DAO<Contato> {
 	}
 
 	@Override
-	public int save(Contato t) {
+	public int save(Contato contato) {
 		String sql = "insert into contato(nome, email, telefone) ";
 		sql += "values (?, ?, ?)";
 
@@ -110,7 +109,7 @@ public class ContatoDAO implements DAO<Contato> {
 	}
 
 	@Override
-	public boolean update(Contato t, String[] params) {
+	public boolean update(Contato contato, String[] params) {
 		String sql = "update contato set nome = ?, email = ?, telefone = ? where id = ?";
 
 		// Recupera a conexão com o banco
@@ -150,7 +149,7 @@ public class ContatoDAO implements DAO<Contato> {
 	}
 
 	@Override
-	public boolean delete(Contato t) {
+	public boolean delete(Contato contato) {
 		String sql = "delete from contato where id = ?";
 
 		// Recupera a conex�o com o banco
