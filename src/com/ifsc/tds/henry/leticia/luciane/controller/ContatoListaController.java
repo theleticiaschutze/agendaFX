@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import com.peregrinoti.dao.AmigoDAO;
-import com.peregrinoti.dao.TipoColecaoDAO;
-import com.peregrinoti.entity.Contato;
-import com.peregrinoti.entity.TipoColecao;
+import com.ifsc.tds.henry.leticia.luciane.dao.ContatoDAO;
+import com.ifsc.tds.henry.leticia.luciane.entity.Contato;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -27,7 +26,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -85,7 +83,7 @@ public class ContatoListaController implements Initializable {
 	private TableColumn<Contato, String> tbcNome;
 
 	@FXML
-	private TableView<Contato> tbvAmigos;
+	private TableView<Contato> tbvContatos;
 
 	@FXML
 	private Tooltip tlpEditar;
@@ -96,28 +94,28 @@ public class ContatoListaController implements Initializable {
 	@FXML
 	private Tooltip tlpIncluir;
 
-	public static final String AMIGO_EDITAR = " - Editar";
-	public static final String AMIGO_INCLUIR = " - Incluir";
+	public static final String CONTATO_EDITAR = " - Editar";
+	public static final String CONTATO_INCLUIR = " - Incluir";
 
-	private AmigoDAO amigoDAO;
-	private List<Contato> listaAmigos;
-	private ObservableList<Contato> observableListaAmigos = FXCollections.observableArrayList();
+	private ContatoDAO contatoDAO;
+	private List<Contato> listaContatos;
+	private ObservableList<Contato> observableListaContatos = FXCollections.observableArrayList();
 
 	@FXML
 	void onClickBtnEditar(ActionEvent event) {
-		Contato amigo = this.tbvAmigos.getSelectionModel().getSelectedItem();
+		Contato contato = this.tbvContatos.getSelectionModel().getSelectedItem();
 
-		if (amigo != null) {
-			boolean btnConfirmarClic = this.onShowTelaAmigoEditar(amigo,
-					ContatoListaController.AMIGO_EDITAR);
+		if (contato != null) {
+			boolean btnConfirmarClic = this.onShowTelaContatoEditar(contato,
+					ContatoListaController.CONTATO_EDITAR);
 
 			if (btnConfirmarClic) {
-				this.getAmigoDAO().update(amigo, null);
-				this.carregarTableViewAmigos();
+				this.getContatoDAO().update(contato, null);
+				this.carregarTableViewContatos();
 			}
 		} else {
 			Alert alerta = new Alert(Alert.AlertType.ERROR);
-			alerta.setContentText("Por favor, escolha um amigo na tabela!");
+			alerta.setContentText("Por favor, escolha um contato na tabela!");
 			alerta.show();
 		}
 
@@ -125,13 +123,13 @@ public class ContatoListaController implements Initializable {
 
 	@FXML
 	void onClickBtnExcluir(ActionEvent event) {
-		Contato amigo = this.tbvAmigos.getSelectionModel().getSelectedItem();
+		Contato contato = this.tbvContatos.getSelectionModel().getSelectedItem();
 
-		if (amigo != null) {
+		if (contato != null) {
 
 			Alert alerta = new Alert(AlertType.CONFIRMATION);
 			alerta.setTitle("Pergunta");
-			alerta.setHeaderText("Confirma a exclusão do amigo?\n" + amigo.getNome());
+			alerta.setHeaderText("Confirma a exclusão do contato?\n" + contato.getNome());
 
 			ButtonType botaoNao = ButtonType.NO;
 			ButtonType botaoSim = ButtonType.YES;
@@ -139,52 +137,52 @@ public class ContatoListaController implements Initializable {
 			Optional<ButtonType> resultado = alerta.showAndWait();
 
 			if (resultado.get() == botaoSim) {
-				this.getAmigoDAO().delete(amigo);
-				this.carregarTableViewAmigos();
+				this.getContatoDAO().delete(contato);
+				this.carregarTableViewContatos();
 			}
 		} else {
 			Alert alerta = new Alert(Alert.AlertType.ERROR);
-			alerta.setContentText("Por favor, escolha um amigo na tabela!");
+			alerta.setContentText("Por favor, escolha um contato na tabela!");
 			alerta.show();
 		}
 	}
 
 	@FXML
 	void onClickBtnIncluir(ActionEvent event) {
-		Contato amigo = new Contato();
+		Contato contato = new Contato();
 
-		boolean btnConfirmarClic = this.onShowTelaAmigoEditar(amigo, ContatoListaController.AMIGO_INCLUIR);
+		boolean btnConfirmarClic = this.onShowTelaContatoEditar(contato, ContatoListaController.CONTATO_INCLUIR);
 
 		if (btnConfirmarClic) {
-			this.getAmigoDAO().save(amigo);
-			this.carregarTableViewAmigos();
+			this.getContatoDAO().save(contato);
+			this.carregarTableViewContatos();
 		}
 	}
 
-	public boolean onShowTelaAmigoEditar(Contato amigo, String operacao) {
+	public boolean onShowTelaContatoEditar(Contato contato, String operacao) {
 		try {
 			// carregando o loader
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/peregrinoti/view/AmigoEdit.fxml"));
-			Parent amigoEditXML = loader.load();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ifsc/tds/henry/leticia/luciane/view/ContatoEdit.fxml"));
+			Parent contatoEditXML = loader.load();
 
 			// criando uma janela nova
-			Stage janelaAmigoEditar = new Stage();
-			janelaAmigoEditar.setTitle("Cadastro de amigo " + operacao);
-			janelaAmigoEditar.initModality(Modality.APPLICATION_MODAL);
-			janelaAmigoEditar.resizableProperty().setValue(Boolean.FALSE);
+			Stage janelaContatoEditar = new Stage();
+			janelaContatoEditar.setTitle("Cadastro de contato " + operacao);
+			janelaContatoEditar.initModality(Modality.APPLICATION_MODAL);
+			janelaContatoEditar.resizableProperty().setValue(Boolean.FALSE);
 
-			Scene amigoEditLayout = new Scene(amigoEditXML);
-			janelaAmigoEditar.setScene(amigoEditLayout);
+			Scene contatoEditLayout = new Scene(contatoEditXML);
+			janelaContatoEditar.setScene(contatoEditLayout);
 
 			// carregando o controller e a scene
-			ContatoEditController amigoEditController = loader.getController();
-			amigoEditController.setJanelaAmigoEdit(janelaAmigoEditar);
-			amigoEditController.populaTela(amigo);
+			ContatoEditController contatoEditController = loader.getController();
+			contatoEditController.setJanelaContatoEdit(janelaContatoEditar);
+			contatoEditController.populaTela(contato);
 
 			// mostrando a tela
-			janelaAmigoEditar.showAndWait();
+			janelaContatoEditar.showAndWait();
 
-			return amigoEditController.isOkClick();
+			return contatoEditController.isOkClick();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,7 +194,7 @@ public class ContatoListaController implements Initializable {
 	public boolean onCloseQuery() {
 		Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
 		alerta.setTitle("Pergunta");
-		alerta.setHeaderText("Deseja sair do cadastro de amigo?");
+		alerta.setHeaderText("Deseja sair do cadastro de contato?");
 		ButtonType buttonTypeNO = ButtonType.NO;
 		ButtonType buttonTypeYES = ButtonType.YES;
 		alerta.getButtonTypes().setAll(buttonTypeYES, buttonTypeNO);
@@ -204,54 +202,54 @@ public class ContatoListaController implements Initializable {
 		return result.get() == buttonTypeYES ? true : false;
 	}
 
-	public AmigoDAO getAmigoDAO() {
-		return amigoDAO;
+	public ContatoDAO getContatoDAO() {
+		return contatoDAO;
 	}
 
-	public void setAmigoDAO(AmigoDAO amigoDAO) {
-		this.amigoDAO = amigoDAO;
+	public void setContatoDAO(ContatoDAO contatoDAO) {
+		this.contatoDAO = contatoDAO;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.setAmigoDAO(new AmigoDAO());
-		this.carregarTableViewAmigos();
-		this.selecionarItemTableViewTipoColecoes(null);
+		this.setContatoDAO(new ContatoDAO());
+		this.carregarTableViewContatos();
+		this.selecionarItemTableViewContatos(null);
 
-		this.tbvAmigos.getSelectionModel().selectedItemProperty()
-				.addListener((observable, oldValue, newValue) -> selecionarItemTableViewTipoColecoes(newValue));
+		this.tbvContatos.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldValue, newValue) -> selecionarItemTableViewContatos(newValue));
 
 	}
 
-	public void carregarTableViewAmigos() {
+	public void carregarTableViewContatos() {
 		this.tbcCodigo.setCellValueFactory(new PropertyValueFactory<>("id"));
 		this.tbcNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 
-		this.setListaAmigos(this.getAmigoDAO().getAll());
-		this.setObservableListaTipoColecoes(FXCollections.observableArrayList(this.getListaAmigos()));
-		this.tbvAmigos.setItems(this.getObservableListaAmigos());
+		this.setListaContatos(this.getContatoDAO().getAll());
+		this.setObservableListaContatos(FXCollections.observableArrayList(this.getListaContatos()));
+		this.tbvContatos.setItems(this.getObservableListaContatos());
 	}
 
-	public void setListaAmigos(List<Contato> listaAmigos) {
-		this.listaAmigos = listaAmigos;
+	public void setListaContatos(List<Contato> listaContatos) {
+		this.listaContatos = listaContatos;
 	}
 
-	public List<Contato> getListaAmigos() {
-		return listaAmigos;
+	public List<Contato> getListaContatos() {
+		return listaContatos;
 	}
 
-	public ObservableList<Contato> getObservableListaAmigos() {
-		return observableListaAmigos;
+	public ObservableList<Contato> getObservableListaContatos() {
+		return observableListaContatos;
 	}
 
-	public void setObservableListaTipoColecoes(ObservableList<Contato> observableListaAmigos) {
-		this.observableListaAmigos = observableListaAmigos;
+	public void setObservableListaContatos(ObservableList<Contato> observableListaContatos) {
+		this.observableListaContatos = observableListaContatos;
 	}
 
-	public void selecionarItemTableViewTipoColecoes(Contato amigo) {
-		if (amigo != null) {
-			this.lblNomeValor.setText(amigo.getNome());
-			this.lblTelefoneValor.setText(amigo.getTelefone());
+	public void selecionarItemTableViewContatos(Contato contato) {
+		if (contato != null) {
+			this.lblNomeValor.setText(contato.getNome());
+			this.lblTelefoneValor.setText(contato.getTelefone());
 		} else {
 			this.lblNomeValor.setText("");
 			this.lblTelefoneValor.setText("");
