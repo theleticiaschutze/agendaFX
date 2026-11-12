@@ -44,7 +44,6 @@ public class Contato {
 		this.telefone = telefone;
 	}	
 
-	
 
 	@Override
 	public String toString() {
