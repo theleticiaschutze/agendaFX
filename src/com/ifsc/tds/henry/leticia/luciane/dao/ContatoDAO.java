@@ -125,7 +125,8 @@ public class ContatoDAO implements DAO<Contato> {
 			stm.setString(1, contato.getNome());
 			stm.setString(2, contato.getEmail());
 			stm.setString(3, contato.getTelefone());
-			stm.setLong(5, contato.getId());
+			stm.setLong(4, contato.getId());
+			
 
 			stm.execute();
 
