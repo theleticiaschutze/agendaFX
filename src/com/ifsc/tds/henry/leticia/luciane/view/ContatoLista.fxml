@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="pnlPrincipal" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peregrinoti.controller.AmigoListaController">
+<AnchorPane fx:id="pnlPrincipal" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ifsc.tds.henry.leticia.luciane.controller.ContatoListaController">
    <children>
       <SplitPane fx:id="pnlDivisao" dividerPositions="0.35618729096989965" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
          <items>
