@@ -28,11 +28,11 @@ public class Contato {
 		this.nome = nome;
 	}
 
-	public String getNomeResponsavel() {
+	public String getEmaill() {
 		return email;
 	}
 
-	public void setNomeResponsavel(String nomeResponsavel) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
