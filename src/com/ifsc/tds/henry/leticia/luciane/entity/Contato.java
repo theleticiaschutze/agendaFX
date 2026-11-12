@@ -28,7 +28,7 @@ public class Contato {
 		this.nome = nome;
 	}
 
-	public String getEmaill() {
+	public String getEmail() {
 		return email;
 	}
 
@@ -44,7 +44,6 @@ public class Contato {
 		this.telefone = telefone;
 	}	
 
-	
 
 	@Override
 	public String toString() {

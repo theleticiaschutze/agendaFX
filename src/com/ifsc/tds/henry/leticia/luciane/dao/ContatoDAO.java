@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.peregrinoti.entity.Amigo;
-import com.peregrinoti.entity.TipoColecao;
+import com.ifsc.tds.henry.leticia.luciane.entity.Contato;
 
 public class ContatoDAO implements DAO<Contato> {
 
@@ -19,14 +18,14 @@ public class ContatoDAO implements DAO<Contato> {
 
 	@Override
 	public List getAll() {
-		List<Amigo> amigos = new ArrayList<Amigo>();
+		List<Contato> contatos = new ArrayList<Contato>();
 
-		String sql = "select * from amigo";
+		String sql = "select * from contato";
 
-		// Recupera a conex�o com o banco
+		// Recupera a conexão com o banco
 		Connection conexao = null;
 
-		// Criar uma prepara��o da consulta
+		// Criar uma preparação da consulta
 		PreparedStatement stm = null;
 
 		// Criar uma classe que guarde o retorno da opera��o
@@ -40,16 +39,15 @@ public class ContatoDAO implements DAO<Contato> {
 			rset = stm.executeQuery();
 
 			while (rset.next()) {
-				Amigo amigo = new Amigo();
+				Contato contato = new Contato();
 
 				// atribui campo para atributo
-				amigo.setId(rset.getLong("id"));
-				amigo.setNome(rset.getString("nome"));
-				amigo.setNomeResponsavel(rset.getString("nome_responsavel"));
-				amigo.setTelefone(rset.getString("telefone"));
-				amigo.setEndereco(rset.getString("endereco"));
+				contato.setId(rset.getLong("id"));
+				contato.setNome(rset.getString("nome"));
+				contato.setEmail(rset.getString("email"));
+				contato.setTelefone(rset.getString("telefone"));
 
-				amigos.add(amigo);
+				contatos.add(contato);
 			}
 
 		} catch (Exception e) {
@@ -67,13 +65,13 @@ public class ContatoDAO implements DAO<Contato> {
 				e.printStackTrace();
 			}
 		}
-		return amigos;
+		return contatos;
 	}
 
 	@Override
-	public int save(Amigo amigo) {
-		String sql = "insert into amigo(nome, nome_responsavel, telefone, endereco) ";
-		sql += "values (?, ?, ?, ?)";
+	public int save(Contato contato) {
+		String sql = "insert into contato(nome, email, telefone) ";
+		sql += "values (?, ?, ?)";
 
 		// Recupera a conexão com o banco
 		Connection conexao = null;
@@ -85,10 +83,9 @@ public class ContatoDAO implements DAO<Contato> {
 			conexao = new Conexao().getConnection();
 
 			stm = conexao.prepareStatement(sql);
-			stm.setString(1, amigo.getNome());
-			stm.setString(2, amigo.getNomeResponsavel());
-			stm.setString(3, amigo.getTelefone());
-			stm.setString(4, amigo.getEndereco());
+			stm.setString(1, contato.getNome());
+			stm.setString(2, contato.getEmail());
+			stm.setString(3, contato.getTelefone());
 
 			stm.execute();
 
@@ -112,24 +109,23 @@ public class ContatoDAO implements DAO<Contato> {
 	}
 
 	@Override
-	public boolean update(Amigo amigo, String[] params) {
-		String sql = "update amigo set nome = ?, nome_responsavel = ?, telefone = ?, endereco = ? where id = ?";
+	public boolean update(Contato contato, String[] params) {
+		String sql = "update contato set nome = ?, email = ?, telefone = ? where id = ?";
 
-		// Recupera a conex�o com o banco
+		// Recupera a conexão com o banco
 		Connection conexao = null;
 
-		// Criar uma prepara��o da consulta
+		// Criar uma preparação da consulta
 		PreparedStatement stm = null;
 
 		try {
 			conexao = new Conexao().getConnection();
 
 			stm = conexao.prepareStatement(sql);
-			stm.setString(1, amigo.getNome());
-			stm.setString(2, amigo.getNomeResponsavel());
-			stm.setString(3, amigo.getTelefone());
-			stm.setString(4, amigo.getEndereco());
-			stm.setLong(5, amigo.getId());
+			stm.setString(1, contato.getNome());
+			stm.setString(2, contato.getEmail());
+			stm.setString(3, contato.getTelefone());
+			stm.setLong(5, contato.getId());
 
 			stm.execute();
 
@@ -151,11 +147,10 @@ public class ContatoDAO implements DAO<Contato> {
 		}
 		return false;
 	}
-
 
 	@Override
-	public boolean delete(Amigo amigo) {
-		String sql = "delete from amigo where id = ?";
+	public boolean delete(Contato contato) {
+		String sql = "delete from contato where id = ?";
 
 		// Recupera a conex�o com o banco
 		Connection conexao = null;
@@ -167,7 +162,7 @@ public class ContatoDAO implements DAO<Contato> {
 			conexao = new Conexao().getConnection();
 
 			stm = conexao.prepareStatement(sql);
-			stm.setLong(1, amigo.getId());
+			stm.setLong(1, contato.getId());
 			stm.execute();
 
 		} catch (Exception e) {
@@ -188,6 +183,5 @@ public class ContatoDAO implements DAO<Contato> {
 		}
 		return false;
 	}
-
 
 }
