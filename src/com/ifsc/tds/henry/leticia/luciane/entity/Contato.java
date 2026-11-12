@@ -28,7 +28,7 @@ public class Contato {
 		this.nome = nome;
 	}
 
-	public String getEmaill() {
+	public String getEmail() {
 		return email;
 	}
 

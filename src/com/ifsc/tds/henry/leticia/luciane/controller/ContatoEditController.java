@@ -1,10 +1,6 @@
 package com.ifsc.tds.henry.leticia.luciane.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.peregrinoti.entity.Contato;
-import com.peregrinoti.entity.TipoColecao;
+import com.ifsc.tds.henry.leticia.luciane.entity.Contato;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +22,7 @@ public class ContatoEditController {
 	private Button btnOK;
 
 	@FXML
-	private Label lblEndereco;
+	private Label lblEmail;
 
 	@FXML
 	private Label lblNome;
@@ -44,56 +40,51 @@ public class ContatoEditController {
 	private AnchorPane pnlPrincipal;
 
 	@FXML
-	private TextField txtEndereco;
+	private TextField txtEmail;
 
 	@FXML
 	private TextField txtNome;
 
 	@FXML
-	private TextField txtNomeResponsavel;
-
-	@FXML
 	private TextField txtTelefone;
 
-	private Stage janelaAmigoEdit;
+	private Stage janelaContatoEdit;
 
-	private Contato amigo;
+	private Contato contato;
 
 	private boolean okClick = false;
 
 	@FXML
 	void onClickBtnCancela(ActionEvent event) {
-		this.getJanelaAmigoEdit().close();
+		this.getJanelaContatoEdit().close();
 	}
 
 	@FXML
 	void onClickBtnOK(ActionEvent event) {
 		if (validarCampos()) {
-			this.amigo.setNome(this.txtNome.getText());
-			this.amigo.setNomeResponsavel(this.txtNomeResponsavel.getText());
-			this.amigo.setTelefone(this.txtTelefone.getText());
-			this.amigo.setEndereco(this.txtEndereco.getText());
+			this.contato.setNome(this.txtNome.getText());
+			this.contato.setEmail(this.txtEmail.getText());
+			this.contato.setTelefone(this.txtTelefone.getText());
 
 			this.okClick = true;
-			this.getJanelaAmigoEdit().close();
+			this.getJanelaContatoEdit().close();
 		}
 	}
 
-	public void setJanelaAmigoEdit(Stage janelaAmigoEdit) {
-		this.janelaAmigoEdit = janelaAmigoEdit;
+	public void setJanelaContatoEdit(Stage janelaContatoEdit) {
+		this.janelaContatoEdit = janelaContatoEdit;
 	}
 
-	public Stage getJanelaAmigoEdit() {
-		return janelaAmigoEdit;
+	public Stage getJanelaContatoEdit() {
+		return janelaContatoEdit;
 	}
 
-	public void populaTela(Contato amigo) {
-		this.amigo = amigo;
+	public void populaTela(Contato contato) {
+		this.contato = contato;
 
-		this.txtNome.setText(amigo.getNome());
-		this.txtNomeResponsavel.setText(amigo.getNomeResponsavel());
-		this.txtTelefone.setText(amigo.getTelefone());
-		this.txtEndereco.setText(amigo.getEndereco());
+		this.txtNome.setText(contato.getNome());
+		this.txtEmail.setText(contato.getEmail());
+		this.txtTelefone.setText(contato.getTelefone());
 	}
 
 	public boolean isOkClick() {
@@ -111,7 +102,7 @@ public class ContatoEditController {
 			return true;
 		} else {
 			Alert alerta = new Alert(Alert.AlertType.ERROR);
-			alerta.initOwner(this.janelaAmigoEdit);
+			alerta.initOwner(this.janelaContatoEdit);
 			alerta.setTitle("Dados inválidos!");
 			alerta.setHeaderText("Favor corrigir as seguintes informações:");
 			alerta.setContentText(mensagemErros);
