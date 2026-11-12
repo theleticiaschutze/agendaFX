@@ -6,11 +6,11 @@ public class Contato {
 
 	private String nome;
 
-	private String nomeResponsavel;
+	private String email;
 
 	private String telefone;
 
-	private String endereco;
+	
 
 	public Long getId() {
 		return id;
@@ -29,11 +29,11 @@ public class Contato {
 	}
 
 	public String getNomeResponsavel() {
-		return nomeResponsavel;
+		return email;
 	}
 
 	public void setNomeResponsavel(String nomeResponsavel) {
-		this.nomeResponsavel = nomeResponsavel;
+		this.email = email;
 	}
 
 	public String getTelefone() {
@@ -42,15 +42,9 @@ public class Contato {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
-	}
+	}	
 
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
+	
 
 	@Override
 	public String toString() {
