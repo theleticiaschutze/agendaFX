@@ -95,7 +95,7 @@ public class ContatoEditController {
 		String mensagemErros = new String();
 
 		if (this.txtNome.getText() == null || this.txtNome.getText().trim().length() == 0 || this.txtEmail.getText() == null || this.txtEmail.getText().trim().length() == 0 || this.txtTelefone.getText() == null || this.txtTelefone.getText().trim().length() == 0) {
-			mensagemErros += "Preencha todas as informações!\n";
+			mensagemErros += "Preencha todas as informaÃ§Ãµes!\n";
 		}
 
 		if (mensagemErros.length() == 0) {
@@ -103,8 +103,8 @@ public class ContatoEditController {
 		} else {
 			Alert alerta = new Alert(Alert.AlertType.ERROR);
 			alerta.initOwner(this.janelaContatoEdit);
-			alerta.setTitle("Dados inválidos!");
-			alerta.setHeaderText("Favor corrigir as seguintes informações:");
+			alerta.setTitle("Dados invï¿½lidos!");
+			alerta.setHeaderText("Favor corrigir as seguintes informaÃ§Ãµes:");
 			alerta.setContentText(mensagemErros);
 			alerta.showAndWait();
 
